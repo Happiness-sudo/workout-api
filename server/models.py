@@ -51,4 +51,8 @@ class WorkoutExercise(db.Model):
         if value is not None and value <= 0:
             raise ValueError("invalid sets")
         return value
-    
+    @validates('duration_minutes')
+def validate_duration(self, key, value):
+    if value <= 0:
+        raise ValueError("Duration must be greater than 0")
+    return value
