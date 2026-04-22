@@ -85,9 +85,4 @@ Created as part of a backend development lab project.
 
 
 
-Run:
-
-```bash
-git add README.md
-git commit -m "Add README with project description and instructions"
-````
+R
