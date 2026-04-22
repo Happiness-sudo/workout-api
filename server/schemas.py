@@ -9,7 +9,7 @@ class ExerciseSchema(Schema):
     @validates("name")
     def validate_name(self, value):
         if len(value) < 2:
-            raise ValidationError("Too short")
+            raise ValidationError("too short")
 
 
 class WorkoutSchema(Schema):
@@ -17,6 +17,11 @@ class WorkoutSchema(Schema):
     date = fields.Str(required=True)
     duration_minutes = fields.Int(required=True)
     notes = fields.Str()
+
+    @validates("duration_minutes")
+    def validate_duration(self, value):
+        if value <= 0:
+            raise ValidationError("invalid duration")
 
 
 class WorkoutExerciseSchema(Schema):

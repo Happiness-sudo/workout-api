@@ -3,7 +3,6 @@ from sqlalchemy.orm import validates
 
 db = SQLAlchemy()
 
-# Exercise
 class Exercise(db.Model):
     __tablename__ = 'exercises'
 
@@ -14,7 +13,7 @@ class Exercise(db.Model):
 
     workout_exercises = db.relationship('WorkoutExercise', back_populates='exercise')
 
-# Workout
+
 class Workout(db.Model):
     __tablename__ = 'workouts'
 
@@ -25,7 +24,13 @@ class Workout(db.Model):
 
     workout_exercises = db.relationship('WorkoutExercise', back_populates='workout')
 
-# Join Table
+    @validates('duration_minutes')
+    def validate_duration(self, key, value):
+        if value <= 0:
+            raise ValueError("invalid duration")
+        return value
+
+
 class WorkoutExercise(db.Model):
     __tablename__ = 'workout_exercises'
 
@@ -41,9 +46,8 @@ class WorkoutExercise(db.Model):
     workout = db.relationship('Workout', back_populates='workout_exercises')
     exercise = db.relationship('Exercise', back_populates='workout_exercises')
 
-    # simple validation
     @validates('sets')
     def validate_sets(self, key, value):
         if value is not None and value <= 0:
-            raise ValueError("Sets must be greater than 0")
+            raise ValueError("invalid sets")
         return value
